@@ -7,7 +7,12 @@ import TrendsModel from "../../models/trends";
  * @description To get trending youtube videos saved in DB.
  */
 const GET = async (request, response) => {
-  const trends = await TrendsModel.find().populate("channel");
+  const skip = request.query && request.query.skip ? request.query.skip : 0;
+  const trends = await TrendsModel.find()
+    .sort({ createdAt: -1 })
+    .limit(2)
+    .skip(Number(skip))
+    .populate("channel");
   const trendCount = await TrendsModel.countDocuments();
   response.statusCode = 200;
   response.json({

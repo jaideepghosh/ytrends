@@ -22,6 +22,11 @@ const ChannelSchema = new Schema({
     required: true
   }
 });
-
-const Channel = mongoose.model("channels", ChannelSchema);
+let Channel;
+try {
+  // Trying to get the existing model to avoid OverwriteModelError
+  Channel = mongoose.model("channels");
+} catch {
+  Channel = mongoose.model("channels", ChannelSchema);
+}
 export default Channel;
